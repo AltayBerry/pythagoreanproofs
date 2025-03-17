@@ -18,6 +18,14 @@
     html {
         scroll-behavior: smooth;
     }
+    /* Ensure all images have the same size */
+    .proof-image {
+        width: 100%; /* Makes images responsive */
+        max-width: 400px; /* Set a fixed max width */
+        height: 300px; /* Set a fixed height */
+        object-fit: cover; /* Ensures images fit without distortion */
+        border-radius: 8px; /* Optional: rounded corners */
+    }
   </style>
 </head>
 <body>
@@ -31,21 +39,11 @@
       </button>
       <div class="collapse navbar-collapse" id="navbarNav">
         <ul class="navbar-nav ms-auto">
-          <li class="nav-item">
-            <a class="nav-link" href="#bhaskara">Bhaskara's Proof</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="#garfield">Garfield's Proof</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="#similarity">Similarity Proof</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="#euclid">Euclid's Proof</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="#algebraic">Algebraic Proof</a>
-          </li>
+          <li class="nav-item"><a class="nav-link" href="#bhaskara">Bhaskara's Proof</a></li>
+          <li class="nav-item"><a class="nav-link" href="#garfield">Garfield's Proof</a></li>
+          <li class="nav-item"><a class="nav-link" href="#similarity">Similarity Proof</a></li>
+          <li class="nav-item"><a class="nav-link" href="#euclid">Euclid's Proof</a></li>
+          <li class="nav-item"><a class="nav-link" href="#algebraic">Algebraic Proof</a></li>
         </ul>
       </div>
     </div>
@@ -55,31 +53,35 @@
   <div class="container my-5">
     <section id="bhaskara" class="mb-5">
       <h2 class="mb-3">Bhaskara's Proof</h2>
-      <img id="bhaskaraImg" src="image1_bhaskara.jpg" alt="Bhaskara's Proof" class="img-fluid mb-3">
+      <img id="bhaskaraImg" src="image1_bhaskara.jpg" alt="Bhaskara's Proof" class="img-fluid proof-image mb-3">
       <button class="btn btn-primary mb-3" onclick="toggleImage('bhaskaraImg', 'image1_bhaskara.jpg', 'image2_bhaskara.jpg')">Toggle Image</button>
       <p>Content for Bhaskara's Proof goes here.</p>
     </section>
+    
     <section id="garfield" class="mb-5">
       <h2 class="mb-3">Garfield's Proof</h2>
-      <img id="garfieldImg" src="image1_garfield.jpg" alt="Garfield's Proof" class="img-fluid mb-3">
+      <img id="garfieldImg" src="image1_garfield.jpg" alt="Garfield's Proof" class="img-fluid proof-image mb-3">
       <button class="btn btn-primary mb-3" onclick="toggleImage('garfieldImg', 'image1_garfield.jpg', 'image2_garfield.jpg')">Toggle Image</button>
       <p>Content for Garfield's Proof goes here.</p>
     </section>
+    
     <section id="similarity" class="mb-5">
       <h2 class="mb-3">Similarity Proof</h2>
-      <img id="similarityImg" src="image1_similarity.jpg" alt="Similarity Proof" class="img-fluid mb-3">
+      <img id="similarityImg" src="image1_similarity.jpg" alt="Similarity Proof" class="img-fluid proof-image mb-3">
       <button class="btn btn-primary mb-3" onclick="toggleImage('similarityImg', 'image1_similarity.jpg', 'image2_similarity.jpg')">Toggle Image</button>
       <p>Content for Similarity Proof goes here.</p>
     </section>
+    
     <section id="euclid" class="mb-5">
       <h2 class="mb-3">Euclid's Proof</h2>
-      <img id="euclidImg" src="image1_euclid.jpg" alt="Euclid's Proof" class="img-fluid mb-3">
+      <img id="euclidImg" src="image1_euclid.jpg" alt="Euclid's Proof" class="img-fluid proof-image mb-3">
       <button class="btn btn-primary mb-3" onclick="toggleImage('euclidImg', 'image1_euclid.jpg', 'image2_euclid.jpg')">Toggle Image</button>
       <p>Content for Euclid's Proof goes here.</p>
     </section>
+    
     <section id="algebraic" class="mb-5">
       <h2 class="mb-3">Algebraic Proof</h2>
-      <img id="algebraicImg" src="image1_algebraic.jpg" alt="Algebraic Proof" class="img-fluid mb-3">
+      <img id="algebraicImg" src="image1_algebraic.jpg" alt="Algebraic Proof" class="img-fluid proof-image mb-3">
       <button class="btn btn-primary mb-3" onclick="toggleImage('algebraicImg', 'image1_algebraic.jpg', 'image2_algebraic.jpg')">Toggle Image</button>
       <p>Content for Algebraic Proof goes here.</p>
     </section>
