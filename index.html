@@ -1,49 +1,99 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Pythagorean Proofs</title>
-    <style>
-        body {
-            margin: 0;
-            font-family: Arial, sans-serif;
-            scroll-behavior: smooth;
-        }
-        .section {
-            height: 100vh;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            text-align: center;
-            font-size: 24px;
-            font-weight: bold;
-            transition: opacity 1s ease-in-out;
-        }
-        .proof1 { background: #ffcccb; }
-        .proof2 { background: #add8e6; }
-        .proof3 { background: #90ee90; }
-        .proof4 { background: #f0e68c; }
-    </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Pythagorean Proofs</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f4f4f4;
+      margin: 0;
+      padding: 0;
+      color: #333;
+    }
+    header {
+      background: #333;
+      color: #fff;
+      padding: 20px 0;
+      text-align: center;
+    }
+    nav ul {
+      list-style: none;
+      padding: 0;
+      display: flex;
+      justify-content: center;
+      margin: 10px 0 0;
+    }
+    nav li {
+      margin: 0 15px;
+    }
+    nav a {
+      color: #fff;
+      text-decoration: none;
+      font-weight: bold;
+    }
+    .container {
+      max-width: 960px;
+      margin: auto;
+      padding: 20px;
+    }
+    .proof {
+      background: #fff;
+      margin: 20px 0;
+      padding: 20px;
+      border-radius: 5px;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    }
+    .proof img {
+      max-width: 100%;
+      height: auto;
+      display: block;
+      margin: 15px 0;
+    }
+    .proof h2 {
+      margin-top: 0;
+    }
+  </style>
 </head>
 <body>
-    <div class="section proof1">Proof 1: Rearrangement Method</div>
-    <div class="section proof2">Proof 2: Algebraic Proof</div>
-    <div class="section proof3">Proof 3: Euclid's Proof</div>
-    <div class="section proof4">Proof 4: Garfield's Proof</div>
-
-    <script>
-        document.addEventListener("scroll", function() {
-            let sections = document.querySelectorAll(".section");
-            sections.forEach(section => {
-                let rect = section.getBoundingClientRect();
-                if (rect.top >= 0 && rect.bottom <= window.innerHeight) {
-                    section.style.opacity = 1;
-                } else {
-                    section.style.opacity = 0.5;
-                }
-            });
-        });
-    </script>
+  <header>
+    <h1>Pythagorean Proofs</h1>
+    <nav>
+      <ul>
+        <li><a href="#proof1">Rearrangement</a></li>
+        <li><a href="#proof2">Euclid's Proof</a></li>
+        <li><a href="#proof3">Similarity</a></li>
+      </ul>
+    </nav>
+  </header>
+  <div class="container">
+    <!-- Proof 1: Proof by Rearrangement -->
+    <section id="proof1" class="proof">
+      <h2>Proof by Rearrangement</h2>
+      <img src="rearrangement.png" alt="Diagram of Proof by Rearrangement">
+      <p>
+        This proof demonstrates the Pythagorean theorem by rearranging four identical right triangles inside a square. The resulting areas of the two smaller squares sum up to the area of the large square.
+      </p>
+    </section>
+    
+    <!-- Proof 2: Euclid's Proof -->
+    <section id="proof2" class="proof">
+      <h2>Euclid's Proof</h2>
+      <img src="euclid-proof.png" alt="Diagram of Euclid's Proof">
+      <p>
+        In Euclid's proof, the theorem is shown by constructing an altitude in the right triangle, which forms two smaller similar triangles. By comparing the areas of the squares on each side, the theorem is established.
+      </p>
+    </section>
+    
+    <!-- Proof 3: Proof Using Similarity -->
+    <section id="proof3" class="proof">
+      <h2>Proof Using Similarity</h2>
+      <img src="similarity-proof.png" alt="Diagram of Proof Using Similarity">
+      <p>
+        This method uses the properties of similar triangles to derive the Pythagorean theorem. By setting up proportions based on the triangle’s side lengths, one can prove that the square of the hypotenuse is equal to the sum of the squares of the other two sides.
+      </p>
+    </section>
+  </div>
 </body>
 </html>
