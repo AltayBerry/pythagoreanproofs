@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pythagorean Proofs</title>
+    <style>
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            scroll-behavior: smooth;
+        }
+        .section {
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            font-size: 24px;
+            font-weight: bold;
+            transition: opacity 1s ease-in-out;
+        }
+        .proof1 { background: #ffcccb; }
+        .proof2 { background: #add8e6; }
+        .proof3 { background: #90ee90; }
+        .proof4 { background: #f0e68c; }
+    </style>
+</head>
+<body>
+    <div class="section proof1">Proof 1: Rearrangement Method</div>
+    <div class="section proof2">Proof 2: Algebraic Proof</div>
+    <div class="section proof3">Proof 3: Euclid's Proof</div>
+    <div class="section proof4">Proof 4: Garfield's Proof</div>
+
+    <script>
+        document.addEventListener("scroll", function() {
+            let sections = document.querySelectorAll(".section");
+            sections.forEach(section => {
+                let rect = section.getBoundingClientRect();
+                if (rect.top >= 0 && rect.bottom <= window.innerHeight) {
+                    section.style.opacity = 1;
+                } else {
+                    section.style.opacity = 0.5;
+                }
+            });
+        });
+    </script>
+</body>
+</html>
