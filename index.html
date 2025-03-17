@@ -18,7 +18,6 @@
     html {
         scroll-behavior: smooth;
     }
-    /* Ensure all images have the same size */
     .proof-image {
         width: 100%;
         max-width: 500px;
@@ -36,97 +35,62 @@
         <img src="your-icon.png" alt="Logo" width="30" height="30" class="d-inline-block align-top rounded-circle">
         Pythagorean Proofs
       </a>
-      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
-        aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
-      </button>
-      <div class="collapse navbar-collapse" id="navbarNav">
-        <ul class="navbar-nav ms-auto">
-          <li class="nav-item"><a class="nav-link" href="#bhaskara">Bhaskara's Proof</a></li>
-          <li class="nav-item"><a class="nav-link" href="#garfield">Garfield's Proof</a></li>
-          <li class="nav-item"><a class="nav-link" href="#similarity">Similarity Proof</a></li>
-          <li class="nav-item"><a class="nav-link" href="#euclid">Euclid's Proof</a></li>
-          <li class="nav-item"><a class="nav-link" href="#algebraic">Algebraic Proof</a></li>
-        </ul>
-      </div>
     </div>
   </nav>
 
-  <!-- Main Content -->
+  <!-- Mini-Game: Find the Missing Side -->
   <div class="container my-5">
-    <section id="bhaskara" class="mb-5">
-      <h2 class="mb-3">Bhaskara's Proof</h2>
-      <img id="bhaskaraImg" src="image1_bhaskara.jpg" alt="Bhaskara's Proof" class="img-fluid proof-image mb-3">
-      <button class="btn btn-primary mb-3" onclick="toggleImage('bhaskaraImg', 'image1_bhaskara.jpg', 'image2_bhaskara.jpg')">Toggle Image</button>
-      <p>Content for Bhaskara's Proof goes here.</p>
-    </section>
-    
-    <section id="garfield" class="mb-5">
-      <h2 class="mb-3">Garfield's Proof</h2>
-      <img id="garfieldImg" src="image1_garfield.jpg" alt="Garfield's Proof" class="img-fluid proof-image mb-3">
-      <button class="btn btn-primary mb-3" onclick="toggleImage('garfieldImg', 'image1_garfield.jpg', 'image2_garfield.jpg')">Toggle Image</button>
-      <p>Content for Garfield's Proof goes here.</p>
-    </section>
-    
-    <section id="similarity" class="mb-5">
-      <h2 class="mb-3">Similarity Proof</h2>
-      <img id="similarityImg" src="image1_similarity.jpg" alt="Similarity Proof" class="img-fluid proof-image mb-3">
-      <button class="btn btn-primary mb-3" onclick="toggleImage('similarityImg', 'image1_similarity.jpg', 'image2_similarity.jpg')">Toggle Image</button>
-      <p>Content for Similarity Proof goes here.</p>
-    </section>
-    
-    <section id="euclid" class="mb-5">
-      <h2 class="mb-3">Euclid's Proof</h2>
-      <img id="euclidImg" src="image1_euclid.jpg" alt="Euclid's Proof" class="img-fluid proof-image mb-3">
-      <button class="btn btn-primary mb-3" onclick="toggleImage('euclidImg', 'image1_euclid.jpg', 'image2_euclid.jpg')">Toggle Image</button>
-      <p>Content for Euclid's Proof goes here.</p>
-    </section>
-    
-    <section id="algebraic" class="mb-5">
-      <h2 class="mb-3">Algebraic Proof</h2>
-      <img id="algebraicImg" src="image1_algebraic.jpg" alt="Algebraic Proof" class="img-fluid proof-image mb-3">
-      <button class="btn btn-primary mb-3" onclick="toggleImage('algebraicImg', 'image1_algebraic.jpg', 'image2_algebraic.jpg')">Toggle Image</button>
-      <p>Content for Algebraic Proof goes here.</p>
-    </section>
-  </div>
-
-  <!-- Mini Game -->
-  <div class="container my-5">
-    <h2 class="text-center">Guess the Number Game</h2>
-    <p class="text-center">Guess a number between 1 and 10!</p>
+    <h2 class="text-center">Find the Missing Side!</h2>
+    <p class="text-center">Use the Pythagorean Theorem (a² + b² = c²) to find the missing side.</p>
     <div class="text-center">
-      <input type="number" id="userGuess" min="1" max="10" class="form-control w-25 d-inline">
-      <button class="btn btn-success" onclick="checkGuess()">Guess</button>
+      <p><strong>Given:</strong> <span id="sideA"></span>, <span id="sideB"></span></p>
+      <input type="number" id="userAnswer" class="form-control w-25 d-inline" placeholder="Enter missing side">
+      <button class="btn btn-success" onclick="checkTriangle()">Submit</button>
     </div>
     <p id="gameResult" class="text-center mt-3"></p>
   </div>
 
   <script>
-    function toggleImage(imgId, img1, img2) {
-        let img = document.getElementById(imgId);
-        let currentSrc = img.src.split('/').pop(); // Extract filename from src
+    let sideA, sideB, missingSide, isHypotenuse;
 
-        if (currentSrc === img1.split('/').pop()) {
-            img.src = img2;
+    function generateTriangle() {
+        let hypotenuseChance = Math.random() < 0.5; // 50% chance to find hypotenuse or leg
+        let a = Math.floor(Math.random() * 9) + 3; // Random side (3-11)
+        let b = Math.floor(Math.random() * 9) + 3; // Another random side (3-11)
+
+        if (hypotenuseChance) {
+            // Find the hypotenuse
+            sideA = a;
+            sideB = b;
+            missingSide = Math.sqrt(a * a + b * b).toFixed(2);
+            isHypotenuse = true;
         } else {
-            img.src = img1;
+            // Find a missing leg
+            let c = Math.floor(Math.random() * 5) + 13; // Hypotenuse (13-17)
+            sideA = c;
+            sideB = a;
+            missingSide = Math.sqrt(c * c - a * a).toFixed(2);
+            isHypotenuse = false;
         }
+
+        document.getElementById("sideA").textContent = `Side A = ${sideA}`;
+        document.getElementById("sideB").textContent = isHypotenuse ? `Side B = ${sideB}` : `Hypotenuse = ${sideA}`;
+        document.getElementById("gameResult").textContent = "";
     }
 
-    // Mini Game Script
-    let randomNumber = Math.floor(Math.random() * 10) + 1;
-
-    function checkGuess() {
-        let userGuess = document.getElementById("userGuess").value;
+    function checkTriangle() {
+        let userGuess = document.getElementById("userAnswer").value;
         let result = document.getElementById("gameResult");
 
-        if (userGuess == randomNumber) {
-            result.innerHTML = "<span class='text-success'>🎉 Correct! You guessed the number!</span>";
-            randomNumber = Math.floor(Math.random() * 10) + 1; // Reset the number
+        if (parseFloat(userGuess).toFixed(2) == missingSide) {
+            result.innerHTML = "<span class='text-success'>🎉 Correct! Well done!</span>";
+            setTimeout(generateTriangle, 2000); // New problem after 2 seconds
         } else {
-            result.innerHTML = "<span class='text-danger'>❌ Wrong! Try again.</span>";
+            result.innerHTML = "<span class='text-danger'>❌ Incorrect, try again!</span>";
         }
     }
+
+    generateTriangle(); // Generate first question on page load
   </script>
 
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
