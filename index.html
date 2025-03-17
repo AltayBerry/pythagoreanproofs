@@ -119,25 +119,36 @@
 <script>
     let sideA, sideB, missingSide, isHypotenuse;
 
-    function generateTriangle() {
-        let hypotenuseChance = Math.random() < 0.5; // 50% chance to find hypotenuse or leg
-        let a = Math.floor(Math.random() * 9) + 3; // Random side (3-11)
-        let b = Math.floor(Math.random() * 9) + 3; // Another random side (3-11)
+  function generateTriangle() {
+    let hypotenuseChance = Math.random() < 0.5; // 50% chance to find hypotenuse or leg
+    let a = Math.floor(Math.random() * 9) + 3; // Random side (3-11)
+    let b = Math.floor(Math.random() * 9) + 3; // Another random side (3-11)
+    
+    if (hypotenuseChance) {
+        // Finding the hypotenuse (c)
+        sideA = a;
+        sideB = b;
+        missingSide = Math.sqrt(a * a + b * b).toFixed(2);
+        isHypotenuse = true;
+        
+        document.getElementById("sideA").textContent = `Side A = ${sideA}`;
+        document.getElementById("sideB").textContent = `Side B = ${sideB}`;
+        document.getElementById("gameResult").textContent = "Find the Hypotenuse!";
+    } else {
+        // Finding a missing leg
+        let c = Math.floor(Math.random() * 5) + 13; // Hypotenuse (13-17)
+        sideA = c; // Hypotenuse
+        sideB = a; // Known leg
+        missingSide = Math.sqrt(c * c - a * a).toFixed(2);
+        isHypotenuse = false;
+        
+        document.getElementById("sideA").textContent = `Hypotenuse = ${sideA}`;
+        document.getElementById("sideB").textContent = `Side B = ${sideB}`;
+        document.getElementById("gameResult").textContent = "Find the Missing Leg!";
+    }
 
-        if (hypotenuseChance) {
-            // Finding the hypotenuse
-            sideA = a;
-            sideB = b;
-            missingSide = Math.sqrt(a * a + b * b).toFixed(2);
-            isHypotenuse = true;
-        } else {
-            // Finding a missing leg
-            let c = Math.floor(Math.random() * 5) + 13; // Hypotenuse (13-17)
-            sideA = a;
-            sideB = c;
-            missingSide = Math.sqrt(c * c - a * a).toFixed(2);
-            isHypotenuse = false;
-        }
+    document.getElementById("userAnswer").value = ""; // Clear input field
+}
 
         // Update the DOM
         document.getElementById("sideA").textContent = isHypotenuse ? `Side A = ${sideA}` : `Hypotenuse = ${sideB}`;
