@@ -20,11 +20,11 @@
     }
     /* Ensure all images have the same size */
     .proof-image {
-        width: 100%; /* Makes images responsive */
-        max-width: 500px; /* Set a fixed max width */
-        height: auto; /* Set a fixed height */
-        object-fit: contain; /* Ensures images fit without distortion */
-        border-radius: 8px; /* Optional: rounded corners */
+        width: 100%;
+        max-width: 500px;
+        height: auto;
+        object-fit: contain;
+        border-radius: 8px;
     }
   </style>
 </head>
@@ -32,7 +32,10 @@
   <!-- Navigation -->
   <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
     <div class="container">
-      <a class="navbar-brand" href="#">Pythagorean Proofs</a>
+      <a class="navbar-brand" href="#">
+        <img src="your-icon.png" alt="Logo" width="30" height="30" class="d-inline-block align-top rounded-circle">
+        Pythagorean Proofs
+      </a>
       <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
         aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
@@ -87,6 +90,17 @@
     </section>
   </div>
 
+  <!-- Mini Game -->
+  <div class="container my-5">
+    <h2 class="text-center">Guess the Number Game</h2>
+    <p class="text-center">Guess a number between 1 and 10!</p>
+    <div class="text-center">
+      <input type="number" id="userGuess" min="1" max="10" class="form-control w-25 d-inline">
+      <button class="btn btn-success" onclick="checkGuess()">Guess</button>
+    </div>
+    <p id="gameResult" class="text-center mt-3"></p>
+  </div>
+
   <script>
     function toggleImage(imgId, img1, img2) {
         let img = document.getElementById(imgId);
@@ -96,6 +110,21 @@
             img.src = img2;
         } else {
             img.src = img1;
+        }
+    }
+
+    // Mini Game Script
+    let randomNumber = Math.floor(Math.random() * 10) + 1;
+
+    function checkGuess() {
+        let userGuess = document.getElementById("userGuess").value;
+        let result = document.getElementById("gameResult");
+
+        if (userGuess == randomNumber) {
+            result.innerHTML = "<span class='text-success'>🎉 Correct! You guessed the number!</span>";
+            randomNumber = Math.floor(Math.random() * 10) + 1; // Reset the number
+        } else {
+            result.innerHTML = "<span class='text-danger'>❌ Wrong! Try again.</span>";
         }
     }
   </script>
