@@ -7,92 +7,63 @@
   <style>
     body {
       font-family: Arial, sans-serif;
-      background: #f4f4f4;
-      margin: 0;
-      padding: 0;
+      margin: 40px;
+      background: #f9f9f9;
       color: #333;
     }
     header {
-      background: #333;
-      color: #fff;
-      padding: 20px 0;
       text-align: center;
+      margin-bottom: 40px;
     }
-    nav ul {
-      list-style: none;
-      padding: 0;
-      display: flex;
-      justify-content: center;
-      margin: 10px 0 0;
-    }
-    nav li {
-      margin: 0 15px;
-    }
-    nav a {
-      color: #fff;
-      text-decoration: none;
-      font-weight: bold;
+    header h1 {
+      margin: 0;
+      font-size: 2.5em;
     }
     .container {
-      max-width: 960px;
+      max-width: 800px;
       margin: auto;
+      background: #fff;
       padding: 20px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
     }
     .proof {
-      background: #fff;
-      margin: 20px 0;
-      padding: 20px;
-      border-radius: 5px;
-      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-    }
-    .proof img {
-      max-width: 100%;
-      height: auto;
-      display: block;
-      margin: 15px 0;
+      margin-bottom: 40px;
     }
     .proof h2 {
-      margin-top: 0;
+      color: #0056b3;
+      margin-bottom: 10px;
+    }
+    .equation {
+      font-weight: bold;
+      margin: 15px 0;
+      font-size: 1.2em;
+    }
+    p {
+      line-height: 1.6;
     }
   </style>
 </head>
 <body>
   <header>
     <h1>Pythagorean Proofs</h1>
-    <nav>
-      <ul>
-        <li><a href="#proof1">Rearrangement</a></li>
-        <li><a href="#proof2">Euclid's Proof</a></li>
-        <li><a href="#proof3">Similarity</a></li>
-      </ul>
-    </nav>
   </header>
   <div class="container">
-    <!-- Proof 1: Proof by Rearrangement -->
-    <section id="proof1" class="proof">
-      <h2>Proof by Rearrangement</h2>
-      <img src="rearrangement.png" alt="Diagram of Proof by Rearrangement">
-      <p>
-        This proof demonstrates the Pythagorean theorem by rearranging four identical right triangles inside a square. The resulting areas of the two smaller squares sum up to the area of the large square.
-      </p>
-    </section>
-    
-    <!-- Proof 2: Euclid's Proof -->
-    <section id="proof2" class="proof">
+    <section class="proof">
       <h2>Euclid's Proof</h2>
-      <img src="euclid-proof.png" alt="Diagram of Euclid's Proof">
-      <p>
-        In Euclid's proof, the theorem is shown by constructing an altitude in the right triangle, which forms two smaller similar triangles. By comparing the areas of the squares on each side, the theorem is established.
-      </p>
+      <p>This classic proof uses similar triangles to show that in any right triangle with sides <em>a</em>, <em>b</em> and hypotenuse <em>c</em>, the areas of the squares on the legs add up to the area of the square on the hypotenuse.</p>
+      <p class="equation">a<sup>2</sup> + b<sup>2</sup> = c<sup>2</sup></p>
     </section>
     
-    <!-- Proof 3: Proof Using Similarity -->
-    <section id="proof3" class="proof">
-      <h2>Proof Using Similarity</h2>
-      <img src="similarity-proof.png" alt="Diagram of Proof Using Similarity">
-      <p>
-        This method uses the properties of similar triangles to derive the Pythagorean theorem. By setting up proportions based on the triangle’s side lengths, one can prove that the square of the hypotenuse is equal to the sum of the squares of the other two sides.
-      </p>
+    <section class="proof">
+      <h2>Proof by Rearrangement</h2>
+      <p>This visual proof involves rearranging copies of the right triangle within a square to illustrate that the sum of the areas of the two smaller squares is equal to the area of the larger square.</p>
+      <p class="equation">a<sup>2</sup> + b<sup>2</sup> = c<sup>2</sup></p>
+    </section>
+    
+    <section class="proof">
+      <h2>Algebraic Proof</h2>
+      <p>Another method involves calculating areas algebraically. By constructing two squares (one large and one composed of triangles and a smaller square) and comparing their areas, one can derive the theorem.</p>
+      <p class="equation">a<sup>2</sup> + b<sup>2</sup> = c<sup>2</sup></p>
     </section>
   </div>
 </body>
