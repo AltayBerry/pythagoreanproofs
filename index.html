@@ -18,7 +18,6 @@
     html {
         scroll-behavior: smooth;
     }
-    /* Ensure all images have the same size */
     .proof-image {
         width: 100%;
         max-width: 500px;
@@ -60,34 +59,6 @@
       <button class="btn btn-primary mb-3" onclick="toggleImage('bhaskaraImg', 'image1_bhaskara.jpg', 'image2_bhaskara.jpg')">Toggle Image</button>
       <p>Content for Bhaskara's Proof goes here.</p>
     </section>
-    
-    <section id="garfield" class="mb-5">
-      <h2 class="mb-3">Garfield's Proof</h2>
-      <img id="garfieldImg" src="image1_garfield.jpg" alt="Garfield's Proof" class="img-fluid proof-image mb-3">
-      <button class="btn btn-primary mb-3" onclick="toggleImage('garfieldImg', 'image1_garfield.jpg', 'image2_garfield.jpg')">Toggle Image</button>
-      <p>Content for Garfield's Proof goes here.</p>
-    </section>
-    
-    <section id="similarity" class="mb-5">
-      <h2 class="mb-3">Similarity Proof</h2>
-      <img id="similarityImg" src="image1_similarity.jpg" alt="Similarity Proof" class="img-fluid proof-image mb-3">
-      <button class="btn btn-primary mb-3" onclick="toggleImage('similarityImg', 'image1_similarity.jpg', 'image2_similarity.jpg')">Toggle Image</button>
-      <p>Content for Similarity Proof goes here.</p>
-    </section>
-    
-    <section id="euclid" class="mb-5">
-      <h2 class="mb-3">Euclid's Proof</h2>
-      <img id="euclidImg" src="image1_euclid.jpg" alt="Euclid's Proof" class="img-fluid proof-image mb-3">
-      <button class="btn btn-primary mb-3" onclick="toggleImage('euclidImg', 'image1_euclid.jpg', 'image2_euclid.jpg')">Toggle Image</button>
-      <p>Content for Euclid's Proof goes here.</p>
-    </section>
-    
-    <section id="algebraic" class="mb-5">
-      <h2 class="mb-3">Algebraic Proof</h2>
-      <img id="algebraicImg" src="image1_algebraic.jpg" alt="Algebraic Proof" class="img-fluid proof-image mb-3">
-      <button class="btn btn-primary mb-3" onclick="toggleImage('algebraicImg', 'image1_algebraic.jpg', 'image2_algebraic.jpg')">Toggle Image</button>
-      <p>Content for Algebraic Proof goes here.</p>
-    </section>
   </div>
 
    <!-- Mini-Game: Find the Missing Side -->
@@ -95,18 +66,17 @@
     <h2 class="text-center">Find the Missing Side!</h2>
     <p class="text-center">Use the Pythagorean Theorem (a² + b² = c²) to find the missing side.</p>
     <div class="text-center">
-      <p><strong>Given:</strong> <span id="sideA"></span>, <span id="sideB"></span></p>
+      <p><strong>Given:</strong> <span id="problemText"></span></p>
       <input type="number" id="userAnswer" class="form-control w-25 d-inline" placeholder="Enter missing side">
       <button class="btn btn-success" onclick="checkTriangle()">Submit</button>
     </div>
     <p id="gameResult" class="text-center mt-3"></p>
   </div>
 
- 
-<script>
+  <script>
     function toggleImage(imgId, img1, img2) {
         let img = document.getElementById(imgId);
-        let currentSrc = img.src.split('/').pop(); // Extract filename from src
+        let currentSrc = img.src.split('/').pop(); 
 
         if (currentSrc === img1.split('/').pop()) {
             img.src = img2;
@@ -114,53 +84,47 @@
             img.src = img1;
         }
     }
-</script>
 
-<script>
     let sideA, sideB, missingSide, isHypotenuse;
 
-  function generateTriangle() {
-    let hypotenuseChance = Math.random() < 0.5; // 50% chance to find hypotenuse or leg
-    let a = Math.floor(Math.random() * 9) + 3; // Random side (3-11)
-    let b = Math.floor(Math.random() * 9) + 3; // Another random side (3-11)
-    
-    if (hypotenuseChance) {
-        // Finding the hypotenuse (c)
-        sideA = a;
-        sideB = b;
-        missingSide = Math.sqrt(a * a + b * b).toFixed(2);
-        isHypotenuse = true;
+    function generateTriangle() {
+        let findHypotenuse = Math.random() < 0.5; // 50% chance for either case
+        let a = Math.floor(Math.random() * 9) + 3; // Side (3-11)
+        let b = Math.floor(Math.random() * 9) + 3; // Another side (3-11)
         
-        document.getElementById("sideA").textContent = `Side A = ${sideA}`;
-        document.getElementById("sideB").textContent = `Side B = ${sideB}`;
-        document.getElementById("gameResult").textContent = "Find the Hypotenuse!";
-    } else {
-        // Finding a missing leg
-        let c = Math.floor(Math.random() * 5) + 13; // Hypotenuse (13-17)
-        sideA = c; // Hypotenuse
-        sideB = a; // Known leg
-        missingSide = Math.sqrt(c * c - a * a).toFixed(2);
-        isHypotenuse = false;
-        
-        document.getElementById("sideA").textContent = `Hypotenuse = ${sideA}`;
-        document.getElementById("sideB").textContent = `Side B = ${sideB}`;
-        document.getElementById("gameResult").textContent = "Find the Missing Leg!";
-    }
+        if (findHypotenuse) {
+            // Solve for hypotenuse (c)
+            sideA = a;
+            sideB = b;
+            missingSide = Math.sqrt(a * a + b * b).toFixed(2);
+            isHypotenuse = true;
+            
+            document.getElementById("problemText").textContent = `Side A = ${sideA}, Side B = ${sideB}. Find the Hypotenuse!`;
+        } else {
+            // Solve for a missing leg
+            let c = Math.floor(Math.random() * 5) + 13; // Hypotenuse (13-17)
+            sideA = c; // Hypotenuse
+            sideB = a; // Known leg
+            missingSide = Math.sqrt(c * c - a * a).toFixed(2);
+            isHypotenuse = false;
+            
+            document.getElementById("problemText").textContent = `Hypotenuse = ${sideA}, Side B = ${sideB}. Find the Missing Leg!`;
+        }
 
-    document.getElementById("userAnswer").value = ""; // Clear input field
-}
-
-        // Update the DOM
-        document.getElementById("sideA").textContent = isHypotenuse ? `Side A = ${sideA}` : `Hypotenuse = ${sideB}`;
-        document.getElementById("sideB").textContent = `Side B = ${sideB}`;
-        document.getElementById("gameResult").textContent = "";
+        document.getElementById("userAnswer").value = ""; // Clear input field
+        document.getElementById("gameResult").textContent = ""; // Reset message
     }
 
     function checkTriangle() {
-        let userGuess = document.getElementById("userAnswer").value;
+        let userGuess = parseFloat(document.getElementById("userAnswer").value);
         let result = document.getElementById("gameResult");
 
-        if (parseFloat(userGuess).toFixed(2) == missingSide) {
+        if (isNaN(userGuess)) {
+            result.innerHTML = "<span class='text-warning'>⚠️ Please enter a valid number!</span>";
+            return;
+        }
+
+        if (userGuess.toFixed(2) == missingSide) {
             result.innerHTML = "<span class='text-success'>🎉 Correct! Well done!</span>";
             setTimeout(generateTriangle, 2000); // New problem after 2 seconds
         } else {
@@ -168,11 +132,9 @@
         }
     }
 
-    // Generate the first question when the page loads
     document.addEventListener("DOMContentLoaded", generateTriangle);
-</script>
+  </script>
 
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
-
