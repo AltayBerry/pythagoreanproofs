@@ -187,8 +187,9 @@
       <p><strong>Given:</strong> <span id="problemText"></span></p>
       <canvas id="triangleCanvas" width="200" height="200" role="img" aria-label="Triangle diagram for Pythagorean minigame"></canvas>
       <br>
-      <input type="number" id="userAnswer" class="form-control w-25 d-inline" placeholder="Enter missing side" aria-label="Your answer">
-      <button id="submitAnswer" class="btn btn-success" aria-label="Submit answer">Submit</button>
+      <input type="number" id="userAnswer" class="form-control w-25 d-inline" placeholder="Enter missing side" aria-label="Your answer" disabled>
+      <!-- Game button will toggle between Start (yellow) and Submit (green) -->
+      <button id="gameButton" class="btn btn-warning" aria-label="Start game">Start</button>
     </div>
     <!-- Enhanced minigame elements: score and timer -->
     <p id="scoreDisplay" class="text-center mt-3">Score: 0</p>
@@ -214,16 +215,41 @@
       }
     }
 
-    // Enhanced minigame variables
+    // Enhanced minigame variables and state
     let sideA, sideB, missingSide, findHypotenuse;
     let score = 0;
-    let timeLeft = 15;
+    let timeLeft = 10;
     let timerInterval = null;
+    let gameActive = false;
+
+    // Starts a new game round
+    function startGame() {
+      gameActive = true;
+      // Update button to Submit (green) and enable the input field
+      const gameButton = document.getElementById("gameButton");
+      gameButton.textContent = "Submit";
+      gameButton.className = "btn btn-success";
+      document.getElementById("userAnswer").disabled = false;
+      document.getElementById("userAnswer").focus();
+      // Reset score display if desired (or keep accumulating)
+      // score = 0;
+      // document.getElementById("scoreDisplay").textContent = "Score: " + score;
+      // Start a new triangle round and timer
+      generateTriangle();
+    }
+
+    // Ends the current game round and resets the button back to Start (yellow)
+    function endGame() {
+      gameActive = false;
+      clearInterval(timerInterval);
+      document.getElementById("gameButton").textContent = "Start";
+      document.getElementById("gameButton").className = "btn btn-warning";
+      document.getElementById("userAnswer").disabled = true;
+    }
 
     function generateTriangle() {
-      // Reset timer
       clearInterval(timerInterval);
-      timeLeft = 15;
+      timeLeft = 10;
       document.getElementById("timerDisplay").textContent = "Time Left: " + timeLeft + "s";
       startTimer();
 
@@ -255,7 +281,7 @@
         if (timeLeft <= 0) {
           clearInterval(timerInterval);
           document.getElementById("gameResult").innerHTML = "<span class='text-danger'>⏰ Time's up! The correct answer was " + missingSide + ".</span>";
-          setTimeout(generateTriangle, 2000);
+          setTimeout(endGame, 2000);
         }
       }, 1000);
     }
@@ -283,7 +309,7 @@
       ctx.fillText(findHypotenuse ? "?" : sideA, (x2 + x3) / 2, (y2 + y3) / 2 - 10);
     }
     
-    function checkTriangle() {
+    function checkAnswer() {
       const userInput = document.getElementById("userAnswer");
       const result = document.getElementById("gameResult");
       const userGuess = parseInt(userInput.value);
@@ -297,14 +323,20 @@
         document.getElementById("scoreDisplay").textContent = "Score: " + score;
         result.innerHTML = "<span class='text-success'>🎉 Correct! Well done!</span>";
         userInput.classList.add("success");
-        setTimeout(() => {
-          userInput.classList.remove("success");
-          generateTriangle();
-        }, 2000);
+        setTimeout(endGame, 2000);
       } else {
         result.innerHTML = "<span class='text-danger'>❌ Incorrect, try again!</span>";
         userInput.classList.add("shake");
         setTimeout(() => userInput.classList.remove("shake"), 500);
+      }
+    }
+    
+    // Handler for the game button click (start if inactive, submit answer if active)
+    function handleGameButtonClick() {
+      if (!gameActive) {
+        startGame();
+      } else {
+        checkAnswer();
       }
     }
     
@@ -363,21 +395,19 @@
       document.querySelectorAll(".toggle-btn").forEach(button => {
         button.addEventListener("click", toggleImage);
       });
-      // Attach event listener to the minigame submit button
-      document.getElementById("submitAnswer").addEventListener("click", checkTriangle);
-      // Allow "Enter" key submission in the answer input
+      // Attach event listener to the game button
+      document.getElementById("gameButton").addEventListener("click", handleGameButtonClick);
+      // Allow "Enter" key submission in the answer input when game is active
       document.getElementById("userAnswer").addEventListener("keypress", function(event) {
-        if (event.key === "Enter") {
+        if (event.key === "Enter" && gameActive) {
           event.preventDefault();
-          checkTriangle();
+          checkAnswer();
         }
       });
       // Setup active nav updates, back-to-top button, and fade in animations
       window.addEventListener("scroll", updateActiveNav);
       setupBackToTop();
       setupFadeIn();
-      // Generate the first triangle for the minigame
-      generateTriangle();
     });
   </script>
 
