@@ -138,16 +138,12 @@
 function drawTriangle() {
     const canvas = document.getElementById("triangleCanvas");
     const ctx = canvas.getContext("2d");
+    ctx.clearRect(0, 0, canvas.width, canvas.height); // Clear canvas
 
-    // Clear previous drawing
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
-
-    const scale = 10; // Scale for better fit
-
-    // Triangle coordinates
-    let x1 = 20, y1 = 150;
-    let x2 = x1 + sideB * scale, y2 = y1;
-    let x3 = x1, y3 = y1 - missingSide * scale;
+    const scaleFactor = Math.min(canvas.width / 2 / Math.max(sideA, sideB, missingSide), 20); // Auto-scale
+    const x1 = 20, y1 = canvas.height - 20;
+    const x2 = x1 + sideB * scaleFactor, y2 = y1;
+    const x3 = x1, y3 = y1 - (findHypotenuse ? chosen[1] : missingSide) * scaleFactor;
 
     // Draw triangle
     ctx.beginPath();
@@ -159,13 +155,14 @@ function drawTriangle() {
     ctx.lineWidth = 3;
     ctx.stroke();
 
-    // Label sides
+    // Label the sides
     ctx.font = "14px Arial";
     ctx.fillStyle = "blue";
     ctx.fillText(sideB, (x1 + x2) / 2, y1 + 15); // Base
-    ctx.fillText(missingSide, x3 - 20, (y1 + y3) / 2); // Height
-    ctx.fillText(sideA, (x2 + x3) / 2, (y2 + y3) / 2 - 10); // Hypotenuse
+    ctx.fillText(findHypotenuse ? sideA : "?", x3 - 20, (y1 + y3) / 2); // Height
+    ctx.fillText(findHypotenuse ? "?" : sideA, (x2 + x3) / 2, (y2 + y3) / 2 - 10); // Hypotenuse
 }
+
     function checkTriangle() {
         let userGuess = parseInt(document.getElementById("userAnswer").value);
         let result = document.getElementById("gameResult");
