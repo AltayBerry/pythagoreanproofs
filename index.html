@@ -53,6 +53,16 @@
       border-radius: 8px;
       border: 2px solid var(--primary-color);
     }
+    /* Fade-in animation styles */
+    .fade-element {
+      opacity: 0;
+      transform: translateY(20px);
+      transition: opacity 1s ease-out, transform 1s ease-out;
+    }
+    .fade-element.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
     /* Back-to-top button */
     #backToTop {
       position: fixed;
@@ -117,7 +127,7 @@
 
   <!-- Main Content -->
   <div class="container my-5">
-    <section id="bhaskara" class="mb-5">
+    <section id="bhaskara" class="mb-5 fade-element">
       <h2 class="mb-3">Bhaskara's Proof</h2>
       <img id="bhaskaraImg" src="image1_bhaskara.jpg" alt="Diagram showing Bhaskara's proof of the Pythagorean theorem." class="img-fluid proof-image mb-3" loading="lazy">
       <button class="btn btn-primary mb-3 toggle-btn" 
@@ -127,7 +137,7 @@
               aria-label="Toggle Bhaskara's Proof image">Toggle Image</button>
       <p>Content for Bhaskara's Proof goes here.</p>
     </section>
-    <section id="garfield" class="mb-5">
+    <section id="garfield" class="mb-5 fade-element">
       <h2 class="mb-3">Garfield's Proof</h2>
       <img id="garfieldImg" src="image1_garfield.jpg" alt="Diagram illustrating Garfield's proof of the Pythagorean theorem." class="img-fluid proof-image mb-3" loading="lazy">
       <button class="btn btn-primary mb-3 toggle-btn" 
@@ -137,7 +147,7 @@
               aria-label="Toggle Garfield's Proof image">Toggle Image</button>
       <p>Content for Garfield's Proof goes here.</p>
     </section>
-    <section id="similarity" class="mb-5">
+    <section id="similarity" class="mb-5 fade-element">
       <h2 class="mb-3">Similarity Proof</h2>
       <img id="similarityImg" src="image1_similarity.jpg" alt="Diagram depicting the Similarity Proof of the Pythagorean theorem." class="img-fluid proof-image mb-3" loading="lazy">
       <button class="btn btn-primary mb-3 toggle-btn" 
@@ -147,7 +157,7 @@
               aria-label="Toggle Similarity Proof image">Toggle Image</button>
       <p>Content for Similarity Proof goes here.</p>
     </section>
-    <section id="euclid" class="mb-5">
+    <section id="euclid" class="mb-5 fade-element">
       <h2 class="mb-3">Euclid's Proof</h2>
       <img id="euclidImg" src="image1_euclid.jpg" alt="Diagram representing Euclid's proof of the Pythagorean theorem." class="img-fluid proof-image mb-3" loading="lazy">
       <button class="btn btn-primary mb-3 toggle-btn" 
@@ -157,7 +167,7 @@
               aria-label="Toggle Euclid's Proof image">Toggle Image</button>
       <p>Content for Euclid's Proof goes here.</p>
     </section>
-    <section id="algebraic" class="mb-5">
+    <section id="algebraic" class="mb-5 fade-element">
       <h2 class="mb-3">Algebraic Proof</h2>
       <img id="algebraicImg" src="image1_algebraic.jpg" alt="Diagram illustrating the Algebraic Proof of the Pythagorean theorem." class="img-fluid proof-image mb-3" loading="lazy">
       <button class="btn btn-primary mb-3 toggle-btn" 
@@ -170,7 +180,7 @@
   </div>
 
   <!-- Mini-Game: Find the Missing Side -->
-  <div id="minigame" class="container my-5">
+  <div id="minigame" class="container my-5 fade-element">
     <h2 class="text-center">Find the Missing Side!</h2>
     <p class="text-center">Use the Pythagorean Theorem (a² + b² = c²) to find the missing side.</p>
     <div class="text-center">
@@ -180,6 +190,9 @@
       <input type="number" id="userAnswer" class="form-control w-25 d-inline" placeholder="Enter missing side" aria-label="Your answer">
       <button id="submitAnswer" class="btn btn-success" aria-label="Submit answer">Submit</button>
     </div>
+    <!-- Enhanced minigame elements: score and timer -->
+    <p id="scoreDisplay" class="text-center mt-3">Score: 0</p>
+    <p id="timerDisplay" class="text-center mt-3">Time Left: 10s</p>
     <p id="gameResult" class="text-center mt-3"></p>
   </div>
 
@@ -201,19 +214,30 @@
       }
     }
 
-    // Minigame variables and functions
+    // Enhanced minigame variables
     let sideA, sideB, missingSide, findHypotenuse;
+    let score = 0;
+    let timeLeft = 15;
+    let timerInterval = null;
+
     function generateTriangle() {
+      // Reset timer
+      clearInterval(timerInterval);
+      timeLeft = 15;
+      document.getElementById("timerDisplay").textContent = "Time Left: " + timeLeft + "s";
+      startTimer();
+
       const triples = [[3,4,5], [5,12,13], [7,24,25], [8,15,17], [9,12,15]];
       const chosen = triples[Math.floor(Math.random() * triples.length)];
-      findHypotenuse = Math.random() < 0.5;
       const problemText = document.getElementById("problemText");
-      if (findHypotenuse) {
+      if (Math.random() < 0.5) {
+        findHypotenuse = true;
         sideA = chosen[0];
         sideB = chosen[1];
         missingSide = chosen[2];
         problemText.textContent = `Side A = ${sideA}, Side B = ${sideB}. Find the Hypotenuse!`;
       } else {
+        findHypotenuse = false;
         sideA = chosen[2];  // Hypotenuse
         sideB = chosen[0];  // One known leg
         missingSide = chosen[1];  // The other missing leg
@@ -222,6 +246,18 @@
       drawTriangle();
       document.getElementById("userAnswer").value = "";
       document.getElementById("gameResult").textContent = "";
+    }
+    
+    function startTimer() {
+      timerInterval = setInterval(() => {
+        timeLeft--;
+        document.getElementById("timerDisplay").textContent = "Time Left: " + timeLeft + "s";
+        if (timeLeft <= 0) {
+          clearInterval(timerInterval);
+          document.getElementById("gameResult").innerHTML = "<span class='text-danger'>⏰ Time's up! The correct answer was " + missingSide + ".</span>";
+          setTimeout(generateTriangle, 2000);
+        }
+      }, 1000);
     }
     
     function drawTriangle() {
@@ -256,6 +292,9 @@
         return;
       }
       if (userGuess === missingSide) {
+        clearInterval(timerInterval);
+        score++;
+        document.getElementById("scoreDisplay").textContent = "Score: " + score;
         result.innerHTML = "<span class='text-success'>🎉 Correct! Well done!</span>";
         userInput.classList.add("success");
         setTimeout(() => {
@@ -299,6 +338,25 @@
       });
     }
     
+    // Fade-in animation using Intersection Observer
+    function setupFadeIn() {
+      const faders = document.querySelectorAll('.fade-element');
+      const options = {
+        threshold: 0.2
+      };
+      const appearOnScroll = new IntersectionObserver((entries, observer) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('visible');
+            observer.unobserve(entry.target);
+          }
+        });
+      }, options);
+      faders.forEach(fader => {
+        appearOnScroll.observe(fader);
+      });
+    }
+    
     // Register event listeners on DOMContentLoaded
     document.addEventListener("DOMContentLoaded", () => {
       // Attach toggle event to image toggle buttons
@@ -314,9 +372,10 @@
           checkTriangle();
         }
       });
-      // Setup active nav updates and back-to-top button
+      // Setup active nav updates, back-to-top button, and fade in animations
       window.addEventListener("scroll", updateActiveNav);
       setupBackToTop();
+      setupFadeIn();
       // Generate the first triangle for the minigame
       generateTriangle();
     });
