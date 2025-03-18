@@ -20,7 +20,7 @@
     }
     .proof-image {
         width: 100%;
-        max-width: 500px;
+        max-width: 400px;
         height: auto;
         object-fit: contain;
         border-radius: 8px;
@@ -112,53 +112,32 @@
         }
     }
 
-    let sideA, sideB, missingSide, isHypotenuse;
-
     function generateTriangle() {
-        let findHypotenuse = Math.random() < 0.5; // 50% chance for either case
-        let a = Math.floor(Math.random() * 9) + 3; // Side (3-11)
-        let b = Math.floor(Math.random() * 9) + 3; // Another side (3-11)
+        let triples = [[3,4,5], [5,12,13], [7,24,25], [8,15,17], [9,12,15]];
+        let chosen = triples[Math.floor(Math.random() * triples.length)];
+        let findHypotenuse = Math.random() < 0.5;
         
         if (findHypotenuse) {
-            // Solve for hypotenuse (c)
-            sideA = a;
-            sideB = b;
-            missingSide = Math.sqrt(a * a + b * b).toFixed(2);
-            isHypotenuse = true;
-            
-            document.getElementById("problemText").textContent = `Side A = ${sideA}, Side B = ${sideB}. Find the Hypotenuse!`;
+            document.getElementById("problemText").textContent = `Side A = ${chosen[0]}, Side B = ${chosen[1]}. Find the Hypotenuse!`;
+            missingSide = chosen[2];
         } else {
-            // Solve for a missing leg
-            let c = Math.floor(Math.random() * 5) + 13; // Hypotenuse (13-17)
-            sideA = c; // Hypotenuse
-            sideB = a; // Known leg
-            missingSide = Math.sqrt(c * c - a * a).toFixed(2);
-            isHypotenuse = false;
-            
-            document.getElementById("problemText").textContent = `Hypotenuse = ${sideA}, Side B = ${sideB}. Find the Missing Leg!`;
+            document.getElementById("problemText").textContent = `Hypotenuse = ${chosen[2]}, Side B = ${chosen[0]}. Find the Missing Leg!`;
+            missingSide = chosen[1];
         }
-
-        document.getElementById("userAnswer").value = ""; // Clear input field
-        document.getElementById("gameResult").textContent = ""; // Reset message
     }
 
     function checkTriangle() {
-        let userGuess = parseFloat(document.getElementById("userAnswer").value);
+        let userGuess = parseInt(document.getElementById("userAnswer").value);
         let result = document.getElementById("gameResult");
 
-        if (isNaN(userGuess)) {
-            result.innerHTML = "<span class='text-warning'>⚠️ Please enter a valid number!</span>";
-            return;
-        }
-
-        if (userGuess.toFixed(2) == missingSide) {
+        if (userGuess === missingSide) {
             result.innerHTML = "<span class='text-success'>🎉 Correct! Well done!</span>";
-            setTimeout(generateTriangle, 2000); // New problem after 2 seconds
+            setTimeout(generateTriangle, 2000);
         } else {
             result.innerHTML = "<span class='text-danger'>❌ Incorrect, try again!</span>";
         }
     }
-
+    
     document.addEventListener("DOMContentLoaded", generateTriangle);
   </script>
 
