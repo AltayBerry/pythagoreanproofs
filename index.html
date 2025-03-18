@@ -193,7 +193,7 @@
     </div>
     <!-- Enhanced minigame elements: score and timer -->
     <p id="scoreDisplay" class="text-center mt-3">Score: 0</p>
-    <p id="timerDisplay" class="text-center mt-3">Time Left: 10s</p>
+    <p id="timerDisplay" class="text-center mt-3">Time Left: 15s</p>
     <p id="gameResult" class="text-center mt-3"></p>
   </div>
 
@@ -218,38 +218,42 @@
     // Enhanced minigame variables and state
     let sideA, sideB, missingSide, findHypotenuse;
     let score = 0;
-    let timeLeft = 10;
+    let timeLeft = 15;
     let timerInterval = null;
     let gameActive = false;
+    // Global timer limit for current round; decreases by 0.5 sec per correct answer (min 5 sec)
+    let currentTimeLimit = 15;
 
-    // Starts a new game round
+    // Starts a new game session (reset timer limit)
     function startGame() {
       gameActive = true;
+      currentTimeLimit = 15; // reset timer for new session
+      score = 0;
+      document.getElementById("scoreDisplay").textContent = "Score: " + score;
       // Update button to Submit (green) and enable the input field
       const gameButton = document.getElementById("gameButton");
       gameButton.textContent = "Submit";
       gameButton.className = "btn btn-success";
       document.getElementById("userAnswer").disabled = false;
       document.getElementById("userAnswer").focus();
-      // Reset score display if desired (or keep accumulating)
-      // score = 0;
-      // document.getElementById("scoreDisplay").textContent = "Score: " + score;
       // Start a new triangle round and timer
       generateTriangle();
     }
 
-    // Ends the current game round and resets the button back to Start (yellow)
+    // Ends the current game (on timeout) and resets the button back to Start (yellow)
     function endGame() {
       gameActive = false;
       clearInterval(timerInterval);
       document.getElementById("gameButton").textContent = "Start";
       document.getElementById("gameButton").className = "btn btn-warning";
       document.getElementById("userAnswer").disabled = true;
+      // Reset currentTimeLimit for a new session
+      currentTimeLimit = 15;
     }
 
     function generateTriangle() {
       clearInterval(timerInterval);
-      timeLeft = 15;
+      timeLeft = currentTimeLimit;
       document.getElementById("timerDisplay").textContent = "Time Left: " + timeLeft + "s";
       startTimer();
 
@@ -319,11 +323,15 @@
       }
       if (userGuess === missingSide) {
         clearInterval(timerInterval);
-        score+=timeLeft;
+        // Add the remaining time to the score
+        score += timeLeft;
         document.getElementById("scoreDisplay").textContent = "Score: " + score;
         result.innerHTML = "<span class='text-success'>🎉 Correct! Well done!</span>";
         userInput.classList.add("success");
-        setTimeout(endGame, 2000);
+        // Decrease the time limit for next round by 0.5 sec (min 5 sec)
+        currentTimeLimit = Math.max(5, currentTimeLimit - 0.5);
+        // Continue game by generating a new triangle after a short delay
+        setTimeout(generateTriangle, 2000);
       } else {
         result.innerHTML = "<span class='text-danger'>❌ Incorrect, try again!</span>";
         userInput.classList.add("shake");
