@@ -94,6 +94,8 @@
     <p class="text-center">Use the Pythagorean Theorem (a² + b² = c²) to find the missing side.</p>
     <div class="text-center">
       <p><strong>Given:</strong> <span id="problemText"></span></p>
+       <canvas id="triangleCanvas" width="200" height="200"></canvas>
+       <br>
       <input type="number" id="userAnswer" class="form-control w-25 d-inline" placeholder="Enter missing side">
       <button class="btn btn-success" onclick="checkTriangle()">Submit</button>
     </div>
@@ -124,8 +126,41 @@
             document.getElementById("problemText").textContent = `Hypotenuse = ${chosen[2]}, Side B = ${chosen[0]}. Find the Missing Leg!`;
             missingSide = chosen[1];
         }
+            drawTriangle(); // Update the visual representation
+      document.getElementById("userAnswer").value = ""; // Clear input field
+      document.getElementById("gameResult").textContent = ""; // Reset message
     }
+function drawTriangle() {
+      const canvas = document.getElementById("triangleCanvas");
+      const ctx = canvas.getContext("2d");
 
+      // Clear previous drawing
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+      const scale = 15; // Adjust to fit within canvas
+
+      // Triangle coordinates
+      let x1 = 20, y1 = 150;
+      let x2 = x1 + sideB * scale, y2 = y1;
+      let x3 = x1, y3 = y1 - missingSide * scale;
+
+      // Draw triangle
+      ctx.beginPath();
+      ctx.moveTo(x1, y1);
+      ctx.lineTo(x2, y2);
+      ctx.lineTo(x3, y3);
+      ctx.closePath();
+      ctx.strokeStyle = "black";
+      ctx.lineWidth = 3;
+      ctx.stroke();
+
+      // Label sides
+      ctx.font = "14px Arial";
+      ctx.fillStyle = "blue";
+      ctx.fillText(sideB, (x1 + x2) / 2, y1 + 15); // Base
+      ctx.fillText(missingSide ? "?" : sideA, x3 - 20, (y1 + y3) / 2); // Height
+      ctx.fillText(sideA, (x2 + x3) / 2, (y2 + y3) / 2 - 10); // Hypotenuse
+  }
     function checkTriangle() {
         let userGuess = parseInt(document.getElementById("userAnswer").value);
         let result = document.getElementById("gameResult");
