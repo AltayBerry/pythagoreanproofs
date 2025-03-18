@@ -114,53 +114,58 @@
         }
     }
 
-    function generateTriangle() {
-        let triples = [[3,4,5], [5,12,13], [7,24,25], [8,15,17], [9,12,15]];
-        let chosen = triples[Math.floor(Math.random() * triples.length)];
-        let findHypotenuse = Math.random() < 0.5;
-        
-        if (findHypotenuse) {
-            document.getElementById("problemText").textContent = `Side A = ${chosen[0]}, Side B = ${chosen[1]}. Find the Hypotenuse!`;
-            missingSide = chosen[2];
-        } else {
-            document.getElementById("problemText").textContent = `Hypotenuse = ${chosen[2]}, Side B = ${chosen[0]}. Find the Missing Leg!`;
-            missingSide = chosen[1];
-        }
-            drawTriangle(); // Update the visual representation
-      document.getElementById("userAnswer").value = ""; // Clear input field
-      document.getElementById("gameResult").textContent = ""; // Reset message
+   function generateTriangle() {
+    let triples = [[3,4,5], [5,12,13], [7,24,25], [8,15,17], [9,12,15]];
+    let chosen = triples[Math.floor(Math.random() * triples.length)];
+    let findHypotenuse = Math.random() < 0.5;
+    
+    if (findHypotenuse) {
+        sideA = chosen[0];
+        sideB = chosen[1];
+        missingSide = chosen[2];
+        document.getElementById("problemText").textContent = `Side A = ${sideA}, Side B = ${sideB}. Find the Hypotenuse!`;
+    } else {
+        sideA = chosen[2];  // Hypotenuse
+        sideB = chosen[0];  // One known leg
+        missingSide = chosen[1];  // The other missing leg
+        document.getElementById("problemText").textContent = `Hypotenuse = ${sideA}, Side B = ${sideB}. Find the Missing Leg!`;
     }
+
+    drawTriangle(); // Now properly draws the triangle
+    document.getElementById("userAnswer").value = ""; // Clear input field
+    document.getElementById("gameResult").textContent = ""; // Reset message
+}
 function drawTriangle() {
-      const canvas = document.getElementById("triangleCanvas");
-      const ctx = canvas.getContext("2d");
+    const canvas = document.getElementById("triangleCanvas");
+    const ctx = canvas.getContext("2d");
 
-      // Clear previous drawing
-      ctx.clearRect(0, 0, canvas.width, canvas.height);
+    // Clear previous drawing
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-      const scale = 15; // Adjust to fit within canvas
+    const scale = 10; // Scale for better fit
 
-      // Triangle coordinates
-      let x1 = 20, y1 = 150;
-      let x2 = x1 + sideB * scale, y2 = y1;
-      let x3 = x1, y3 = y1 - missingSide * scale;
+    // Triangle coordinates
+    let x1 = 20, y1 = 150;
+    let x2 = x1 + sideB * scale, y2 = y1;
+    let x3 = x1, y3 = y1 - missingSide * scale;
 
-      // Draw triangle
-      ctx.beginPath();
-      ctx.moveTo(x1, y1);
-      ctx.lineTo(x2, y2);
-      ctx.lineTo(x3, y3);
-      ctx.closePath();
-      ctx.strokeStyle = "black";
-      ctx.lineWidth = 3;
-      ctx.stroke();
+    // Draw triangle
+    ctx.beginPath();
+    ctx.moveTo(x1, y1);
+    ctx.lineTo(x2, y2);
+    ctx.lineTo(x3, y3);
+    ctx.closePath();
+    ctx.strokeStyle = "black";
+    ctx.lineWidth = 3;
+    ctx.stroke();
 
-      // Label sides
-      ctx.font = "14px Arial";
-      ctx.fillStyle = "blue";
-      ctx.fillText(sideB, (x1 + x2) / 2, y1 + 15); // Base
-      ctx.fillText(missingSide ? "?" : sideA, x3 - 20, (y1 + y3) / 2); // Height
-      ctx.fillText(sideA, (x2 + x3) / 2, (y2 + y3) / 2 - 10); // Hypotenuse
-  }
+    // Label sides
+    ctx.font = "14px Arial";
+    ctx.fillStyle = "blue";
+    ctx.fillText(sideB, (x1 + x2) / 2, y1 + 15); // Base
+    ctx.fillText(missingSide, x3 - 20, (y1 + y3) / 2); // Height
+    ctx.fillText(sideA, (x2 + x3) / 2, (y2 + y3) / 2 - 10); // Hypotenuse
+}
     function checkTriangle() {
         let userGuess = parseInt(document.getElementById("userAnswer").value);
         let result = document.getElementById("gameResult");
