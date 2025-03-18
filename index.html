@@ -5,48 +5,96 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Pythagorean Proofs</title>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <!-- Google Fonts for modern typography -->
+  <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600&display=swap" rel="stylesheet">
   <link rel="icon" type="image/png" href="favicon.png">
   <style>
-    .navbar {
-        position: fixed;
-        top: 0;
-        width: 100%;
-        z-index: 1000;
-        box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
-        background: rgba(0, 0, 0, 0.85); /* Dark with slight transparency */
-        backdrop-filter: blur(5px); /* Adds a glass effect */
-        border-bottom: 3px solid #ffc107; /* Yellow border */
+    :root {
+      --primary-color: #ffc107;
+      --primary-dark: #e0a800;
+      --background-color: rgba(0, 0, 0, 0.85);
+      --text-color: #ffffff;
+      --hover-bg: rgba(255, 255, 255, 0.1);
+      --font-family: 'Open Sans', sans-serif;
     }
-    .navbar-nav .nav-item .nav-link {
-    color: white;
-    transition: color 0.3s, background 0.3s;
-}
-
-.navbar-nav .nav-item .nav-link:hover {
-    color: #ffc107; /* Highlight color */
-    background: rgba(255, 255, 255, 0.1);
-    border-radius: 5px;
-}
     body {
-        padding-top: 60px;
+      padding-top: 60px;
+      font-family: var(--font-family);
+      background-color: #f8f9fa;
     }
     html {
-        scroll-behavior: smooth;
+      scroll-behavior: smooth;
+    }
+    .navbar {
+      position: fixed;
+      top: 0;
+      width: 100%;
+      z-index: 1000;
+      box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
+      background: var(--background-color);
+      backdrop-filter: blur(5px);
+      border-bottom: 3px solid var(--primary-color);
+    }
+    .navbar-nav .nav-item .nav-link {
+      color: var(--text-color);
+      transition: color 0.3s, background 0.3s;
+    }
+    .navbar-nav .nav-item .nav-link:hover,
+    .navbar-nav .nav-item .nav-link.active {
+      color: var(--primary-color);
+      background: var(--hover-bg);
+      border-radius: 5px;
     }
     .proof-image {
-        width: 100%;
-        max-width: 400px;
-        height: auto;
-        object-fit: contain;
-        border-radius: 8px;
+      width: 100%;
+      max-width: 400px;
+      height: auto;
+      object-fit: contain;
+      border-radius: 8px;
+    }
+    /* Back-to-top button */
+    #backToTop {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      background-color: var(--primary-color);
+      color: #000;
+      border: none;
+      border-radius: 50%;
+      width: 50px;
+      height: 50px;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      z-index: 1000;
+    }
+    #backToTop:hover {
+      background-color: var(--primary-dark);
+    }
+    /* Responsive canvas */
+    #triangleCanvas {
+      max-width: 100%;
+      height: auto;
+    }
+    /* Shake animation for incorrect answer */
+    @keyframes shake {
+      0% { transform: translateX(0); }
+      25% { transform: translateX(-5px); }
+      50% { transform: translateX(5px); }
+      75% { transform: translateX(-5px); }
+      100% { transform: translateX(0); }
+    }
+    .shake {
+      animation: shake 0.5s;
     }
   </style>
 </head>
 <body>
   <!-- Navigation -->
-  <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+  <nav class="navbar navbar-expand-lg navbar-dark" aria-label="Main Navigation">
     <div class="container">
-      <a class="navbar-brand" href="#">
+      <a class="navbar-brand" href="#" aria-label="Pythagorean Proofs Home">
         Pythagorean Proofs
       </a>
       <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
@@ -70,136 +118,208 @@
   <div class="container my-5">
     <section id="bhaskara" class="mb-5">
       <h2 class="mb-3">Bhaskara's Proof</h2>
-      <img id="bhaskaraImg" src="image1_bhaskara.jpg" alt="Bhaskara's Proof" class="img-fluid proof-image mb-3">
-      <button class="btn btn-primary mb-3" onclick="toggleImage('bhaskaraImg', 'image1_bhaskara.jpg', 'image2_bhaskara.jpg')">Toggle Image</button>
+      <img id="bhaskaraImg" src="image1_bhaskara.jpg" alt="Diagram showing Bhaskara's proof of the Pythagorean theorem." class="img-fluid proof-image mb-3" loading="lazy">
+      <button class="btn btn-primary mb-3 toggle-btn" 
+              data-target="bhaskaraImg" 
+              data-img1="image1_bhaskara.jpg" 
+              data-img2="image2_bhaskara.jpg" 
+              aria-label="Toggle Bhaskara's Proof image">Toggle Image</button>
       <p>Content for Bhaskara's Proof goes here.</p>
     </section>
-     <section id="garfield" class="mb-5">
-       <h2 class="mb-3">Garfield's Proof</h2>
-       <img id="garfieldImg" src="image1_garfield.jpg" alt="Garfield's Proof" class="img-fluid proof-image mb-3">
-       <button class="btn btn-primary mb-3" onclick="toggleImage('garfieldImg', 'image1_garfield.jpg', 'image2_garfield.jpg')">Toggle Image</button>
-       <p>Content for Garfield's Proof goes here.</p>
-     </section>
-    
+    <section id="garfield" class="mb-5">
+      <h2 class="mb-3">Garfield's Proof</h2>
+      <img id="garfieldImg" src="image1_garfield.jpg" alt="Diagram illustrating Garfield's proof of the Pythagorean theorem." class="img-fluid proof-image mb-3" loading="lazy">
+      <button class="btn btn-primary mb-3 toggle-btn" 
+              data-target="garfieldImg" 
+              data-img1="image1_garfield.jpg" 
+              data-img2="image2_garfield.jpg" 
+              aria-label="Toggle Garfield's Proof image">Toggle Image</button>
+      <p>Content for Garfield's Proof goes here.</p>
+    </section>
     <section id="similarity" class="mb-5">
-       <h2 class="mb-3">Similarity Proof</h2>
-       <img id="similarityImg" src="image1_similarity.jpg" alt="Similarity Proof" class="img-fluid proof-image mb-3">
-       <button class="btn btn-primary mb-3" onclick="toggleImage('similarityImg', 'image1_similarity.jpg', 'image2_similarity.jpg')">Toggle Image</button>
-       <p>Content for Similarity Proof goes here.</p>
-     </section>
- 
-     <section id="euclid" class="mb-5">
-       <h2 class="mb-3">Euclid's Proof</h2>
-       <img id="euclidImg" src="image1_euclid.jpg" alt="Euclid's Proof" class="img-fluid proof-image mb-3">
-       <button class="btn btn-primary mb-3" onclick="toggleImage('euclidImg', 'image1_euclid.jpg', 'image2_euclid.jpg')">Toggle Image</button>
-       <p>Content for Euclid's Proof goes here.</p>
-     </section>
- 
-     <section id="algebraic" class="mb-5">
-       <h2 class="mb-3">Algebraic Proof</h2>
-       <img id="algebraicImg" src="image1_algebraic.jpg" alt="Algebraic Proof" class="img-fluid proof-image mb-3">
-       <button class="btn btn-primary mb-3" onclick="toggleImage('algebraicImg', 'image1_algebraic.jpg', 'image2_algebraic.jpg')">Toggle Image</button>
-       <p>Content for Algebraic Proof goes here.</p>
-     </section>
-   </div>
+      <h2 class="mb-3">Similarity Proof</h2>
+      <img id="similarityImg" src="image1_similarity.jpg" alt="Diagram depicting the Similarity Proof of the Pythagorean theorem." class="img-fluid proof-image mb-3" loading="lazy">
+      <button class="btn btn-primary mb-3 toggle-btn" 
+              data-target="similarityImg" 
+              data-img1="image1_similarity.jpg" 
+              data-img2="image2_similarity.jpg" 
+              aria-label="Toggle Similarity Proof image">Toggle Image</button>
+      <p>Content for Similarity Proof goes here.</p>
+    </section>
+    <section id="euclid" class="mb-5">
+      <h2 class="mb-3">Euclid's Proof</h2>
+      <img id="euclidImg" src="image1_euclid.jpg" alt="Diagram representing Euclid's proof of the Pythagorean theorem." class="img-fluid proof-image mb-3" loading="lazy">
+      <button class="btn btn-primary mb-3 toggle-btn" 
+              data-target="euclidImg" 
+              data-img1="image1_euclid.jpg" 
+              data-img2="image2_euclid.jpg" 
+              aria-label="Toggle Euclid's Proof image">Toggle Image</button>
+      <p>Content for Euclid's Proof goes here.</p>
+    </section>
+    <section id="algebraic" class="mb-5">
+      <h2 class="mb-3">Algebraic Proof</h2>
+      <img id="algebraicImg" src="image1_algebraic.jpg" alt="Diagram illustrating the Algebraic Proof of the Pythagorean theorem." class="img-fluid proof-image mb-3" loading="lazy">
+      <button class="btn btn-primary mb-3 toggle-btn" 
+              data-target="algebraicImg" 
+              data-img1="image1_algebraic.jpg" 
+              data-img2="image2_algebraic.jpg" 
+              aria-label="Toggle Algebraic Proof image">Toggle Image</button>
+      <p>Content for Algebraic Proof goes here.</p>
+    </section>
+  </div>
 
-   <!-- Mini-Game: Find the Missing Side -->
+  <!-- Mini-Game: Find the Missing Side -->
   <div id="minigame" class="container my-5">
     <h2 class="text-center">Find the Missing Side!</h2>
     <p class="text-center">Use the Pythagorean Theorem (a² + b² = c²) to find the missing side.</p>
     <div class="text-center">
       <p><strong>Given:</strong> <span id="problemText"></span></p>
-       <canvas id="triangleCanvas" width="200" height="200"></canvas>
-       <br>
-      <input type="number" id="userAnswer" class="form-control w-25 d-inline" placeholder="Enter missing side">
-      <button class="btn btn-success" onclick="checkTriangle()">Submit</button>
+      <canvas id="triangleCanvas" width="200" height="200" role="img" aria-label="Triangle diagram for Pythagorean minigame"></canvas>
+      <br>
+      <input type="number" id="userAnswer" class="form-control w-25 d-inline" placeholder="Enter missing side" aria-label="Your answer">
+      <button id="submitAnswer" class="btn btn-success" aria-label="Submit answer">Submit</button>
     </div>
     <p id="gameResult" class="text-center mt-3"></p>
   </div>
 
+  <!-- Back-to-Top Button -->
+  <button id="backToTop" aria-label="Back to top">↑</button>
+
   <script>
-    function toggleImage(imgId, img1, img2) {
-        let img = document.getElementById(imgId);
-        let currentSrc = img.src.split('/').pop(); 
-
-        if (currentSrc === img1.split('/').pop()) {
-            img.src = img2;
-        } else {
-            img.src = img1;
-        }
+    // Refactored image toggle function using data attributes
+    function toggleImage(event) {
+      const button = event.currentTarget;
+      const img = document.getElementById(button.dataset.target);
+      const img1 = button.dataset.img1;
+      const img2 = button.dataset.img2;
+      const currentSrc = img.getAttribute('src').split('/').pop();
+      if (currentSrc === img1.split('/').pop()) {
+        img.src = img2;
+      } else {
+        img.src = img1;
+      }
     }
-    let sideA, sideB, missingSide, findHypotenuse; // Declare globally
 
+    // Minigame variables and functions
+    let sideA, sideB, missingSide, findHypotenuse;
     function generateTriangle() {
-        let triples = [[3,4,5], [5,12,13], [7,24,25], [8,15,17], [9,12,15]];
-        let chosen = triples[Math.floor(Math.random() * triples.length)];
-        findHypotenuse = Math.random() < 0.5;
-
-        if (findHypotenuse) {
-            sideA = chosen[0];
-            sideB = chosen[1];
-            missingSide = chosen[2];
-            document.getElementById("problemText").textContent = `Side A = ${sideA}, Side B = ${sideB}. Find the Hypotenuse!`;
-        } else {
-            sideA = chosen[2];  // Hypotenuse
-            sideB = chosen[0];  // One known leg
-            missingSide = chosen[1];  // The other missing leg
-            document.getElementById("problemText").textContent = `Hypotenuse = ${sideA}, Side B = ${sideB}. Find the Missing Leg!`;
-        }
-
-        drawTriangle(); // Ensure drawTriangle() is called
-        document.getElementById("userAnswer").value = ""; // Clear input field
-        document.getElementById("gameResult").textContent = ""; // Reset message
+      const triples = [[3,4,5], [5,12,13], [7,24,25], [8,15,17], [9,12,15]];
+      const chosen = triples[Math.floor(Math.random() * triples.length)];
+      findHypotenuse = Math.random() < 0.5;
+      const problemText = document.getElementById("problemText");
+      if (findHypotenuse) {
+        sideA = chosen[0];
+        sideB = chosen[1];
+        missingSide = chosen[2];
+        problemText.textContent = `Side A = ${sideA}, Side B = ${sideB}. Find the Hypotenuse!`;
+      } else {
+        sideA = chosen[2];  // Hypotenuse
+        sideB = chosen[0];  // One known leg
+        missingSide = chosen[1];  // The other missing leg
+        problemText.textContent = `Hypotenuse = ${sideA}, Side B = ${sideB}. Find the Missing Leg!`;
+      }
+      drawTriangle();
+      document.getElementById("userAnswer").value = "";
+      document.getElementById("gameResult").textContent = "";
     }
-
+    
     function drawTriangle() {
-        const canvas = document.getElementById("triangleCanvas");
-        const ctx = canvas.getContext("2d");
-        ctx.clearRect(0, 0, canvas.width, canvas.height); // Clear canvas
-
-        const scaleFactor = Math.min(canvas.width / 2 / Math.max(sideA, sideB, missingSide), 20); // Auto-scale
-        const x1 = 20, y1 = canvas.height - 20;
-        const x2 = x1 + sideB * scaleFactor, y2 = y1;
-        const x3 = x1, y3 = y1 - (findHypotenuse ? sideA : missingSide) * scaleFactor;
-
-        // Draw triangle
-        ctx.beginPath();
-        ctx.moveTo(x1, y1);
-        ctx.lineTo(x2, y2);
-        ctx.lineTo(x3, y3);
-        ctx.closePath();
-        ctx.strokeStyle = "black";
-        ctx.lineWidth = 3;
-        ctx.stroke();
-
-        // Label the sides
-        ctx.font = "14px Arial";
-        ctx.fillStyle = "blue";
-        ctx.fillText(sideB, (x1 + x2) / 2, y1 + 15); // Base
-        ctx.fillText(findHypotenuse ? sideA : "?", x3 - 20, (y1 + y3) / 2); // Height
-        ctx.fillText(findHypotenuse ? "?" : sideA, (x2 + x3) / 2, (y2 + y3) / 2 - 10); // Hypotenuse
+      const canvas = document.getElementById("triangleCanvas");
+      const ctx = canvas.getContext("2d");
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      const scaleFactor = Math.min(canvas.width / 2 / Math.max(sideA, sideB, missingSide), 20);
+      const x1 = 20, y1 = canvas.height - 20;
+      const x2 = x1 + sideB * scaleFactor, y2 = y1;
+      const x3 = x1, y3 = y1 - (findHypotenuse ? sideA : missingSide) * scaleFactor;
+      ctx.beginPath();
+      ctx.moveTo(x1, y1);
+      ctx.lineTo(x2, y2);
+      ctx.lineTo(x3, y3);
+      ctx.closePath();
+      ctx.strokeStyle = "black";
+      ctx.lineWidth = 3;
+      ctx.stroke();
+      ctx.font = "14px Arial";
+      ctx.fillStyle = "blue";
+      ctx.fillText(sideB, (x1 + x2) / 2, y1 + 15);
+      ctx.fillText(findHypotenuse ? sideA : "?", x3 - 20, (y1 + y3) / 2);
+      ctx.fillText(findHypotenuse ? "?" : sideA, (x2 + x3) / 2, (y2 + y3) / 2 - 10);
     }
-
+    
     function checkTriangle() {
-        let userGuess = parseInt(document.getElementById("userAnswer").value);
-        let result = document.getElementById("gameResult");
-
-        if (userGuess === missingSide) {
-            result.innerHTML = "<span class='text-success'>🎉 Correct! Well done!</span>";
-            setTimeout(generateTriangle, 2000);
-        } else {
-            result.innerHTML = "<span class='text-danger'>❌ Incorrect, try again!</span>";
+      const userInput = document.getElementById("userAnswer");
+      const result = document.getElementById("gameResult");
+      const userGuess = parseInt(userInput.value);
+      if (isNaN(userGuess)) {
+        result.innerHTML = "<span class='text-warning'>Please enter a number!</span>";
+        return;
+      }
+      if (userGuess === missingSide) {
+        result.innerHTML = "<span class='text-success'>🎉 Correct! Well done!</span>";
+        userInput.classList.add("success");
+        setTimeout(() => {
+          userInput.classList.remove("success");
+          generateTriangle();
+        }, 2000);
+      } else {
+        result.innerHTML = "<span class='text-danger'>❌ Incorrect, try again!</span>";
+        userInput.classList.add("shake");
+        setTimeout(() => userInput.classList.remove("shake"), 500);
+      }
+    }
+    
+    // Active navigation state based on scroll position
+    function updateActiveNav() {
+      const sections = document.querySelectorAll("section");
+      const scrollPos = document.documentElement.scrollTop || document.body.scrollTop;
+      sections.forEach(section => {
+        const offsetTop = section.offsetTop - 70;
+        const offsetHeight = section.offsetHeight;
+        const id = section.getAttribute("id");
+        if (scrollPos >= offsetTop && scrollPos < offsetTop + offsetHeight) {
+          document.querySelectorAll(".navbar-nav .nav-link").forEach(link => {
+            link.classList.remove("active");
+            if (link.getAttribute("href") === "#" + id) {
+              link.classList.add("active");
+            }
+          });
         }
+      });
     }
-
-    document.getElementById("userAnswer").addEventListener("keypress", function(event) {
-    if (event.key === "Enter") {
-        event.preventDefault(); // Prevent form submission (if inside a form)
-        checkTriangle();
+    
+    // Back-to-top button functionality
+    function setupBackToTop() {
+      const backToTop = document.getElementById("backToTop");
+      window.addEventListener("scroll", () => {
+        backToTop.style.display = window.scrollY > 300 ? "flex" : "none";
+      });
+      backToTop.addEventListener("click", () => {
+        window.scrollTo({ top: 0, behavior: "smooth" });
+      });
     }
-});
-    document.addEventListener("DOMContentLoaded", generateTriangle);
-</script>
+    
+    // Register event listeners on DOMContentLoaded
+    document.addEventListener("DOMContentLoaded", () => {
+      // Attach toggle event to image toggle buttons
+      document.querySelectorAll(".toggle-btn").forEach(button => {
+        button.addEventListener("click", toggleImage);
+      });
+      // Attach event listener to the minigame submit button
+      document.getElementById("submitAnswer").addEventListener("click", checkTriangle);
+      // Allow "Enter" key submission in the answer input
+      document.getElementById("userAnswer").addEventListener("keypress", function(event) {
+        if (event.key === "Enter") {
+          event.preventDefault();
+          checkTriangle();
+        }
+      });
+      // Setup active nav updates and back-to-top button
+      window.addEventListener("scroll", updateActiveNav);
+      setupBackToTop();
+      // Generate the first triangle for the minigame
+      generateTriangle();
+    });
+  </script>
 
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
