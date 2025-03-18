@@ -249,7 +249,7 @@
 
     function generateTriangle() {
       clearInterval(timerInterval);
-      timeLeft = 10;
+      timeLeft = 15;
       document.getElementById("timerDisplay").textContent = "Time Left: " + timeLeft + "s";
       startTimer();
 
@@ -319,7 +319,7 @@
       }
       if (userGuess === missingSide) {
         clearInterval(timerInterval);
-        score++;
+        score+=timeLeft;
         document.getElementById("scoreDisplay").textContent = "Score: " + score;
         result.innerHTML = "<span class='text-success'>🎉 Correct! Well done!</span>";
         userInput.classList.add("success");
